@@ -6,16 +6,18 @@ public class User {
 
     private String login;
 
-    public User(String login) {
-        this.login = login;
-    }
-
     public static User createUser(String login) {
-        return new User(login);
+        User user = new User();
+        user.setLogin(login);
+        return user;
     }
 
     public String getLogin() {
         return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     @Override

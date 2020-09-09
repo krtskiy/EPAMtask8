@@ -6,12 +6,10 @@ public class Team {
 
     private String name;
 
-    public Team(String name) {
-        this.name = name;
-    }
-
     public static Team createTeam(String name) {
-        return new Team(name);
+        Team team = new Team();
+        team.setName(name);
+        return team;
     }
 
     public String getName() {
