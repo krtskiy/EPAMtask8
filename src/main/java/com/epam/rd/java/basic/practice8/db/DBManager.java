@@ -24,8 +24,6 @@ public class DBManager {
     }
 
     public Connection getConnection(String connectionUrl) throws SQLException {
-        Driver driver = new com.mysql.cj.jdbc.Driver();
-        DriverManager.registerDriver(driver);
         return DriverManager.getConnection(connectionUrl);
     }
 
