@@ -3,18 +3,12 @@ package com.epam.rd.java.basic.practice8.db;
 import com.epam.rd.java.basic.practice8.db.entity.Team;
 import com.epam.rd.java.basic.practice8.db.entity.User;
 
-import javax.security.auth.login.Configuration;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.io.*;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class DBManager {
@@ -23,22 +17,59 @@ public class DBManager {
 
     private static DBManager dbManager;
 
+    private static final String PROPERTIES = "app.properties";
+    private static final String SQL_SCRIPT_FILE = "sql/db-create.sql";
+    private static final String CONNECTION_URL = "connection.url";
+    private static String url;
+
     private DBManager() {
+        try (InputStream inputStream = new FileInputStream(PROPERTIES)) {
+            Properties prop = new Properties();
+            prop.load(inputStream);
+            url = prop.getProperty(CONNECTION_URL);
+            executeScript(getConnection(url), new FileInputStream(SQL_SCRIPT_FILE));
+        } catch (IOException | SQLException e) {
+            LOG.severe(e.getMessage());
+        }
     }
 
     public static DBManager getInstance() {
-        return null;
+        if (dbManager == null) {
+            dbManager = new DBManager();
+        }
+        return dbManager;
     }
 
     public Connection getConnection(String connectionUrl) throws SQLException {
         return DriverManager.getConnection(connectionUrl);
     }
 
-    public void insertUser(User login) {
+    public void insertUser(User user) {
+        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement("INSERT INTO users VALUES (DEFAULT, ?)", Statement.RETURN_GENERATED_KEYS)) {
+
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            LOG.severe(e.getMessage());
+        }
     }
 
     public List<User> findAllUsers() {
-        return null;
+        List<User> listOfUsers = new ArrayList<>();
+        try (Statement statement = getConnection(url).createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM users ORDER BY id")) {
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setLogin(resultSet.getString("login"));
+                listOfUsers.add(user);
+            }
+
+        } catch (SQLException e) {
+            LOG.severe(e.getMessage());
+        }
+        return listOfUsers;
     }
 
     public void insertTeam(Team teamB) {
@@ -75,16 +106,37 @@ public class DBManager {
     public void updateTeam(Team team) {
     }
 
-    public static void main(String[] args) {
-        try (InputStream inputStream = new FileInputStream("app.properties")) {
-            Properties prop = new Properties();
-            prop.load(inputStream);
+    static void executeScript(Connection conn, InputStream in)
+            throws SQLException {
+        Scanner s = new Scanner(in);
+        s.useDelimiter("/\\*[\\s\\S]*?\\*/|--[^\\r\\n]*|;");
 
-            dbManager = new DBManager();
-            dbManager.getConnection(prop.getProperty("connection.url"));
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
+        Statement st = null;
+
+        try {
+            st = conn.createStatement();
+
+            while (s.hasNext()) {
+                String line = s.next().trim();
+
+                if (!line.isEmpty())
+                    st.execute(line);
+            }
+        } finally {
+            if (st != null)
+                st.close();
         }
+    }
+
+    public static void main(String[] args) {
+        dbManager = getInstance();
+
+        dbManager.insertUser(User.createUser("insertU1"));
+        dbManager.insertUser(User.createUser("insertU2"));
+        dbManager.insertUser(User.createUser("insertU3"));
+        dbManager.insertUser(User.createUser("insertU4"));
+        System.out.println(dbManager.findAllUsers());
 
     }
+
 }
