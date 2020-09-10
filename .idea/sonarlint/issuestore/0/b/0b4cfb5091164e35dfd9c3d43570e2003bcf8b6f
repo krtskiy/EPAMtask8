@@ -1,31 +1,25 @@
 
-H
-java:S11683"+Return an empty collection instead of null.(¥¹ï8ö•ÍªÇ.
-P
-java:S1068".Remove this unused "connection" private field.(’çù†ûÿÿÿÿ8õÓ¬Ç.
 
-java:S1186H"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¿ËÇ¨8ö•ÍªÇ.
+java:S1186`"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ñúö·8•ÜšÆÇ.
+
+java:S1186g"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ø¢¸“8•ÜšÆÇ.
+
+java:S1186Z"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(·ó¾•8•ÜšÆÇ.
+H
+java:S1168O"+Return an empty collection instead of null.(¥¹ï8Ì×¿ÈÇ.
+=
+java:S3010" Remove this assignment of "url".(ğ´£ó8Ì×¿ÈÇ.
+H
+java:S1168d"+Return an empty collection instead of null.(¥¹ï8Ì×¿ÈÇ.
 N
-java:S1172=",Remove this unused method parameter "login".(ğ»üıÿÿÿÿ8ö•ÍªÇ.
-M
-java:S1172N"+Remove this unused method parameter "user".(¬ˆ½Ÿüÿÿÿÿ8ö•ÍªÇ.
-M
-java:S1172A"+Remove this unused method parameter "name".(€¿Ù–ÿÿÿÿÿ8ö•ÍªÇ.
-
-java:S1186E"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(·ó¾•8ö•ÍªÇ.
-H
-java:S1168O"+Return an empty collection instead of null.(¥¹ï8ö•ÍªÇ.
+java:S1172R",Remove this unused method parameter "login".(ğ»üıÿÿÿÿ8Ì×¿ÈÇ.
 £
-java:S11866"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(êå”«şÿÿÿÿ8ö•ÍªÇ.
-D
-java:S3010"'Remove this assignment of "connection".(Ú²œ§8½öÌ¬Ç.
-£
-java:S1186/"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(‚åô“ûÿÿÿÿ8ö•ÍªÇ.
+java:S1186K"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(êå”«şÿÿÿÿ8•ÜšÆÇ.
+M
+java:S1172V"+Remove this unused method parameter "name".(€¿Ù–ÿÿÿÿÿ8Ì×¿ÈÇ.
 
-java:S1186U"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ªíìÆ8ö•ÍªÇ.
+java:S1186j"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ªíìÆ8•ÜšÆÇ.
 
-java:S1186K"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ñúö·8ö•ÍªÇ.
-H
-java:S1168:"+Return an empty collection instead of null.(¥¹ï8ö•ÍªÇ.
-
-java:S1186R"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ø¢¸“8ö•ÍªÇ.
+java:S1186]"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¿ËÇ¨8•ÜšÆÇ.
+M
+java:S1172c"+Remove this unused method parameter "user".(¬ˆ½Ÿüÿÿÿÿ8Ì×¿ÈÇ.

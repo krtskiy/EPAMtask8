@@ -17,3 +17,6 @@ h
 8src/main/java/com/epam/rd/java/basic/practice8/Demo.java,0\f\0f80a0f1b9f494fd568ede6a6fa3d9d29a8d67e6
 p
 @src/main/java/com/epam/rd/java/basic/practice8/db/DBManager.java,0\b\0b4cfb5091164e35dfd9c3d43570e2003bcf8b6f
+:
+
+gradlew.sh,f\d\fd6370dd5b775d5dc5a5c365c89969776fcbe8f4

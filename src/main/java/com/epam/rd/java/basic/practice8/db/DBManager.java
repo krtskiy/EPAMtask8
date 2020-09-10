@@ -22,6 +22,11 @@ public class DBManager {
     private static final String CONNECTION_URL = "connection.url";
     private static String url;
 
+    private static final String FIND_ALL_USERS = "SELECT * FROM users ORDER BY id";
+    private static final String INSERT_USER = "INSERT INTO users VALUES (DEFAULT, ?)";
+    private static final String FIND_ALL_TEAMS = "SELECT * FROM teams ORDER BY id";
+    private static final String INSERT_TEAM = "INSERT INTO teams VALUES (DEFAULT, ?)";
+
     private DBManager() {
         try (InputStream inputStream = new FileInputStream(PROPERTIES)) {
             Properties prop = new Properties();
@@ -45,10 +50,16 @@ public class DBManager {
     }
 
     public void insertUser(User user) {
-        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement("INSERT INTO users VALUES (DEFAULT, ?)", Statement.RETURN_GENERATED_KEYS)) {
-
+        try (PreparedStatement preparedStatement =
+                     getConnection(url).prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)
+        ) {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.execute();
+
+            ResultSet generatedId = preparedStatement.getGeneratedKeys();
+            if (generatedId.next()) {
+                user.setId(generatedId.getInt(1));
+            }
         } catch (SQLException e) {
             LOG.severe(e.getMessage());
         }
@@ -57,26 +68,49 @@ public class DBManager {
     public List<User> findAllUsers() {
         List<User> listOfUsers = new ArrayList<>();
         try (Statement statement = getConnection(url).createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM users ORDER BY id")) {
-
+             ResultSet resultSet = statement.executeQuery(FIND_ALL_USERS)
+        ) {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
                 user.setLogin(resultSet.getString("login"));
                 listOfUsers.add(user);
             }
-
         } catch (SQLException e) {
             LOG.severe(e.getMessage());
         }
         return listOfUsers;
     }
 
-    public void insertTeam(Team teamB) {
+    public void insertTeam(Team team) {
+        try (PreparedStatement preparedStatement =
+                     getConnection(url).prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)
+        ) {
+            preparedStatement.setString(1, team.getName());
+            preparedStatement.execute();
+
+            ResultSet generatedName = preparedStatement.getGeneratedKeys();
+            if (generatedName.next()) {
+                team.setName(generatedName.getString(1));
+            }
+        } catch (SQLException e) {
+            LOG.severe(e.getMessage());
+        }
     }
 
     public List<Team> findAllTeams() {
-        return null;
+        List<Team> listOfTeams = new ArrayList<>();
+        try (Statement statement = getConnection(url).createStatement();
+             ResultSet resultSet = statement.executeQuery(FIND_ALL_TEAMS)
+        ) {
+            Team team = new Team();
+            team.setName(resultSet.getString("name"));
+            team.setId(resultSet.getInt("id"));
+            listOfTeams.add(team);
+        } catch (SQLException e) {
+            LOG.severe(e.getMessage());
+        }
+        return listOfTeams;
     }
 
     public User getUser(String login) {
