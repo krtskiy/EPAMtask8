@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Team {
 
+    private int id;
     private String name;
 
     public static Team createTeam(String name) {
@@ -18,6 +19,14 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

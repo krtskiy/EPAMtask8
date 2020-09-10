@@ -3,11 +3,18 @@ package com.epam.rd.java.basic.practice8.db;
 import com.epam.rd.java.basic.practice8.db.entity.Team;
 import com.epam.rd.java.basic.practice8.db.entity.User;
 
+import javax.security.auth.login.Configuration;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 public class DBManager {
@@ -66,5 +73,18 @@ public class DBManager {
     }
 
     public void updateTeam(Team team) {
+    }
+
+    public static void main(String[] args) {
+        try (InputStream inputStream = new FileInputStream("app.properties")) {
+            Properties prop = new Properties();
+            prop.load(inputStream);
+
+            dbManager = new DBManager();
+            dbManager.getConnection(prop.getProperty("connection.url"));
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
