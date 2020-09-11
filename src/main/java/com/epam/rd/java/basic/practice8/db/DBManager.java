@@ -162,9 +162,11 @@ public class DBManager {
     }
 
     public void deleteTeam(Team team) {
+
     }
 
     public void updateTeam(Team team) {
+        
     }
 
     public static void executeScript(Connection conn, InputStream in)

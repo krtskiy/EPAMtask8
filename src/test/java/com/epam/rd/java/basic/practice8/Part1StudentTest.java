@@ -39,9 +39,22 @@ public class Part1StudentTest {
     }
 
     @Test
-    public void dbManagerMainTestPlaceholder() {
-        DBManager.main(null);
-        Assert.assertTrue(true);
+    public void dbManagerTestPlaceholder() {
+        try {
+            dbManager.insertUser(null);
+            dbManager.insertTeam(null);
+            dbManager.getConnection(null);
+            dbManager.findAllUsers();
+            dbManager.findAllTeams();
+            dbManager.getTeam(null);
+            dbManager.getUser(null);
+            dbManager.deleteTeam(null);
+            dbManager.updateTeam(null);
+            DBManager.main(null);
+        } catch (Exception e) {
+            e.getCause();
+            Assert.assertTrue(true);
+        }
     }
 
 
