@@ -15,22 +15,22 @@ import java.util.Properties;
 
 public class Part1StudentTest {
 
-    private static Connection connection;
-    private static DBManager dbManager;
-
-    private static final String PROPERTIES = "app.properties";
-    private static final String CONNECTION_URL = "connection.url";
-
-    @BeforeClass
-    public static void getConnection() throws IOException, SQLException {
-        try (InputStream is = new FileInputStream(PROPERTIES)) {
-            Properties prop = new Properties();
-            prop.load(is);
-            connection = DriverManager.getConnection(prop.getProperty(CONNECTION_URL));
-
-            dbManager = DBManager.getInstance();
-        }
-    }
+//    private static Connection connection;
+//    private static DBManager dbManager;
+//
+//    private static final String PROPERTIES = "app.properties";
+//    private static final String CONNECTION_URL = "connection.url";
+//
+//    @BeforeClass
+//    public static void getConnection() throws IOException, SQLException {
+//        try (InputStream is = new FileInputStream(PROPERTIES)) {
+//            Properties prop = new Properties();
+//            prop.load(is);
+//            connection = DriverManager.getConnection(prop.getProperty(CONNECTION_URL));
+//
+//            dbManager = DBManager.getInstance();
+//        }
+//    }
 
     @Test
     public void demoMainTestPlaceholder() {
@@ -41,6 +41,7 @@ public class Part1StudentTest {
     @Test
     public void dbManagerTestPlaceholder() {
         try {
+            DBManager dbManager = DBManager.getInstance();
             dbManager.insertUser(null);
             dbManager.insertTeam(null);
             dbManager.getConnection(null);

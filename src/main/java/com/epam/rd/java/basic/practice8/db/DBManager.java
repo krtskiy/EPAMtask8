@@ -58,9 +58,10 @@ public class DBManager {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.execute();
 
-            ResultSet generatedId = preparedStatement.getGeneratedKeys();
-            if (generatedId.next()) {
-                user.setId(generatedId.getInt(1));
+            try (ResultSet generatedId = preparedStatement.getGeneratedKeys();) {
+                if (generatedId.next()) {
+                    user.setId(generatedId.getInt(1));
+                }
             }
         } catch (SQLException e) {
             LOG.severe(e.getMessage());
@@ -91,9 +92,10 @@ public class DBManager {
             preparedStatement.setString(1, team.getName());
             preparedStatement.execute();
 
-            ResultSet generatedName = preparedStatement.getGeneratedKeys();
-            if (generatedName.next()) {
-                team.setId(generatedName.getInt(1));
+            try (ResultSet generatedName = preparedStatement.getGeneratedKeys()) {
+                if (generatedName.next()) {
+                    team.setId(generatedName.getInt(1));
+                }
             }
         } catch (SQLException e) {
             LOG.severe(e.getMessage());
@@ -154,7 +156,7 @@ public class DBManager {
         return team;
     }
 
-    public void setTeamsForUser(User user, Team ... team) {
+    public void setTeamsForUser(User user, Team... team) {
     }
 
     public List<Team> getUserTeams(User user) {
@@ -166,7 +168,7 @@ public class DBManager {
     }
 
     public void updateTeam(Team team) {
-        
+
     }
 
     public static void executeScript(Connection conn, InputStream in)
