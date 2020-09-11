@@ -24,6 +24,8 @@ public class Demo {
 
         DBManager dbManager = DBManager.getInstance();
 
+        System.out.println(SEPARATOR + " Part 1");
+
         // Part 1
 
         dbManager.insertUser(User.createUser("petrov"));
@@ -34,7 +36,7 @@ public class Demo {
 
         // users  ==> [ivanov, petrov, obama]
 
-        System.out.println(SEPARATOR);
+        System.out.println(SEPARATOR + " Part 2");
 
         // Part 2
 
@@ -46,7 +48,7 @@ public class Demo {
 
         // teams ==> [teamA, teamB, teamC]
 
-        System.out.println(SEPARATOR);
+        System.out.println(SEPARATOR + " Part 3");
 
         // Part 3
 
@@ -82,13 +84,17 @@ public class Demo {
 
         // teamA teamB teamC
 
-        System.out.println(SEPARATOR);
+        System.out.println(SEPARATOR + " Part 4");
 
         // Part 4
 
         // on delete cascade!
 
         dbManager.deleteTeam(teamA);
+
+        printList(dbManager.findAllTeams());
+
+        System.out.println(SEPARATOR + " Part 5");
 
         // Part 5
 

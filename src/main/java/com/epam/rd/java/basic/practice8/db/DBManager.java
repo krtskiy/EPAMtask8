@@ -20,7 +20,7 @@ public class DBManager {
     private static final String PROPERTIES = "app.properties";
     private static final String SQL_SCRIPT_FILE = "sql/db-create.sql";
     private static final String CONNECTION_URL = "connection.url";
-    private static String url;
+    private String url;
 
     private static final String FIND_ALL_USERS = "SELECT * FROM users ORDER BY id";
     private static final String INSERT_USER = "INSERT INTO users VALUES (DEFAULT, ?)";
@@ -28,6 +28,13 @@ public class DBManager {
     private static final String INSERT_TEAM = "INSERT INTO teams VALUES (DEFAULT, ?)";
     private static final String FIND_USER = "SELECT * FROM users WHERE login=?";
     private static final String FIND_TEAM = "SELECT * FROM teams WHERE name=?";
+    private static final String SET_TEAMS_FOR_USER = "INSERT INTO users_teams VALUES (?, ?)";
+    private static final String GET_USER_TEAMS = "SELECT t.id, t.name FROM users_teams ut\n" +
+            "JOIN users u on ut.user_id = u.id\n" +
+            "JOIN teams t on ut.team_id = t.id\n" +
+            "WHERE u.id=?";
+    private static final String DELETE_TEAM = "DELETE FROM teams WHERE id=?";
+    private static final String UPDATE_TEAM = "UPDATE teams SET name=? WHERE id=?";
 
     private DBManager() {
         try (InputStream inputStream = new FileInputStream(PROPERTIES)) {
@@ -58,7 +65,7 @@ public class DBManager {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.execute();
 
-            try (ResultSet generatedId = preparedStatement.getGeneratedKeys();) {
+            try (ResultSet generatedId = preparedStatement.getGeneratedKeys()) {
                 if (generatedId.next()) {
                     user.setId(generatedId.getInt(1));
                 }
@@ -157,18 +164,56 @@ public class DBManager {
     }
 
     public void setTeamsForUser(User user, Team... team) {
+        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(SET_TEAMS_FOR_USER)) {
+            getConnection(url).setAutoCommit(false);
+            for (Team t : team) {
+                preparedStatement.setInt(1, user.getId());
+                preparedStatement.setInt(2, t.getId());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            LOG.severe(e.getMessage());
+        }
     }
 
     public List<Team> getUserTeams(User user) {
-        return null;
+        List<Team> listOfUserTeams = new ArrayList<>();
+        Team team;
+        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(GET_USER_TEAMS)) {
+            preparedStatement.setInt(1, user.getId());
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    team = new Team();
+                    team.setId(resultSet.getInt("id"));
+                    team.setName(resultSet.getString("name"));
+                    listOfUserTeams.add(team);
+                }
+            }
+
+        } catch (SQLException e) {
+            LOG.severe(e.getMessage());
+        }
+        return listOfUserTeams;
     }
 
     public void deleteTeam(Team team) {
-
+        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(DELETE_TEAM)) {
+            preparedStatement.setInt(1, team.getId());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            LOG.severe(e.getMessage());
+        }
     }
 
     public void updateTeam(Team team) {
-
+        try(PreparedStatement preparedStatement = getConnection(url).prepareStatement(UPDATE_TEAM)) {
+            preparedStatement.setString(1, team.getName());
+            preparedStatement.setInt(2, team.getId());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            LOG.severe(e.getMessage());
+        }
     }
 
     public static void executeScript(Connection conn, InputStream in)
