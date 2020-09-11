@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.epam.rd.java.basic.practice8.Part1StudentTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-09-11T21:51:21" hostname="DESKTOP-1A0RBB1" time="1.409">
+<testsuite name="com.epam.rd.java.basic.practice8.Part1StudentTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-09-11T22:06:37" hostname="DESKTOP-1A0RBB1" time="1.715">
   <properties/>
-  <testcase name="shouldInsertNewUser" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="1.397"/>
-  <testcase name="shouldReturnListOfUsers" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="0.012"/>
-  <system-out><![CDATA[]]></system-out>
+  <testcase name="shouldInsertNewUser" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="1.388"/>
+  <testcase name="testPlaceholder" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="0.318"/>
+  <testcase name="shouldReturnListOfUsers" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="0.008"/>
+  <system-out><![CDATA[=========================== Part 1
+[ivanov, testUser, petrov, obama]
+=========================== Part 2
+[teamA, teamB, teamC]
+=========================== Part 3
+[teamA]
+~~~~~
+[]
+~~~~~
+[teamA, teamB]
+~~~~~
+[teamA, teamB, teamC]
+~~~~~
+=========================== Part 4
+[teamB, teamC]
+=========================== Part 5
+[teamB, teamX]
+]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -29,5 +29,11 @@ public class Part1StudentTest {
         Assert.assertNotNull(dbManager.findAllUsers());
     }
 
+    @Test
+    public void testPlaceholder() {
+        Demo.main(null);
+        Assert.assertTrue(true);
+    }
+
 
 }
