@@ -93,7 +93,7 @@ public class DBManager {
 
             ResultSet generatedName = preparedStatement.getGeneratedKeys();
             if (generatedName.next()) {
-                team.setName(generatedName.getString(1));
+                team.setId(generatedName.getInt(1));
             }
         } catch (SQLException e) {
             LOG.severe(e.getMessage());
@@ -154,13 +154,7 @@ public class DBManager {
         return team;
     }
 
-    public void setTeamsForUser(User user, Team team) {
-    }
-
-    public void setTeamsForUser(User user, Team team1, Team team2) {
-    }
-
-    public void setTeamsForUser(User user, Team team1, Team team2, Team team3) {
+    public void setTeamsForUser(User user, Team ... team) {
     }
 
     public List<Team> getUserTeams(User user) {
@@ -173,7 +167,7 @@ public class DBManager {
     public void updateTeam(Team team) {
     }
 
-    static void executeScript(Connection conn, InputStream in)
+    public static void executeScript(Connection conn, InputStream in)
             throws SQLException {
         Scanner s = new Scanner(in);
         s.useDelimiter("/\\*[\\s\\S]*?\\*/|--[^\\r\\n]*|;");
