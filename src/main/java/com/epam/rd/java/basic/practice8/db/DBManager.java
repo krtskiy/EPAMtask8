@@ -163,6 +163,7 @@ public class DBManager {
         return team;
     }
 
+    // I'm very sorry for this try-catch spaghetti
     public void setTeamsForUser(User user, Team... team) {
         try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(SET_TEAMS_FOR_USER)) {
             getConnection(url).setAutoCommit(false);
@@ -172,8 +173,20 @@ public class DBManager {
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
+            getConnection(url).commit();
         } catch (SQLException e) {
+            try {
+                getConnection(url).rollback();
+            } catch (SQLException ex) {
+                LOG.severe(e.getMessage());
+            }
             LOG.severe(e.getMessage());
+        } finally {
+            try {
+                getConnection(url).setAutoCommit(true);
+            } catch (SQLException e) {
+                LOG.severe(e.getMessage());
+            }
         }
     }
 
@@ -241,9 +254,6 @@ public class DBManager {
     public static void main(String[] args) {
         dbManager = getInstance();
 
-        Team team = dbManager.getTeam("teamA");
-        System.out.println(team);
-        System.out.println(team.getId());
 
     }
 
