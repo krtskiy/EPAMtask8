@@ -172,23 +172,31 @@ public class DBManager {
     public void setTeamsForUser(User user, Team... team) {
         try (Connection connection = getConnection(url)) {
             connection.setAutoCommit(false);
-            try (PreparedStatement preparedStatement = connection.prepareStatement(SET_TEAMS_FOR_USER)) {
-                for (Team t : team) {
-                    preparedStatement.setInt(1, user.getId());
-                    preparedStatement.setInt(2, t.getId());
-                    preparedStatement.addBatch();
-                    preparedStatement.executeBatch();
-                }
-            } catch (SQLException e) {
-                connection.rollback();
-                connection.setAutoCommit(true);
-                LOG.severe(e.getMessage());
-            }
+            setTeamsForUserUtil(connection, user, team);
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
             try {
                 getConnection(url).rollback();
+            } catch (SQLException ex) {
+                LOG.severe(e.getMessage());
+            }
+            LOG.severe(e.getMessage());
+        }
+    }
+
+    private void setTeamsForUserUtil(Connection connection, User user, Team... team) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SET_TEAMS_FOR_USER)) {
+            for (Team t : team) {
+                preparedStatement.setInt(1, user.getId());
+                preparedStatement.setInt(2, t.getId());
+                preparedStatement.addBatch();
+                preparedStatement.executeBatch();
+            }
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+                connection.setAutoCommit(true);
             } catch (SQLException ex) {
                 LOG.severe(e.getMessage());
             }
