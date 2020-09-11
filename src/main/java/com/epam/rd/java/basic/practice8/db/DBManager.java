@@ -26,6 +26,8 @@ public class DBManager {
     private static final String INSERT_USER = "INSERT INTO users VALUES (DEFAULT, ?)";
     private static final String FIND_ALL_TEAMS = "SELECT * FROM teams ORDER BY id";
     private static final String INSERT_TEAM = "INSERT INTO teams VALUES (DEFAULT, ?)";
+    private static final String FIND_USER = "SELECT * FROM users WHERE login=?";
+    private static final String FIND_TEAM = "SELECT * FROM teams WHERE name=?";
 
     private DBManager() {
         try (InputStream inputStream = new FileInputStream(PROPERTIES)) {
@@ -84,7 +86,7 @@ public class DBManager {
 
     public void insertTeam(Team team) {
         try (PreparedStatement preparedStatement =
-                     getConnection(url).prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)
+                     getConnection(url).prepareStatement(INSERT_TEAM, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.setString(1, team.getName());
             preparedStatement.execute();
@@ -103,10 +105,12 @@ public class DBManager {
         try (Statement statement = getConnection(url).createStatement();
              ResultSet resultSet = statement.executeQuery(FIND_ALL_TEAMS)
         ) {
-            Team team = new Team();
-            team.setName(resultSet.getString("name"));
-            team.setId(resultSet.getInt("id"));
-            listOfTeams.add(team);
+            while (resultSet.next()) {
+                Team team = new Team();
+                team.setName(resultSet.getString("name"));
+                team.setId(resultSet.getInt("id"));
+                listOfTeams.add(team);
+            }
         } catch (SQLException e) {
             LOG.severe(e.getMessage());
         }
@@ -114,11 +118,40 @@ public class DBManager {
     }
 
     public User getUser(String login) {
-        return null;
+        User user = null;
+        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(FIND_USER)) {
+
+            preparedStatement.setString(1, login);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    user = new User();
+                    user.setId(resultSet.getInt("id"));
+                    user.setLogin(resultSet.getString("login"));
+                }
+            }
+        } catch (SQLException e) {
+            LOG.severe(e.getMessage());
+        }
+
+        return user;
     }
 
     public Team getTeam(String name) {
-        return null;
+        Team team = null;
+        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(FIND_TEAM)) {
+            preparedStatement.setString(1, name);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    team = new Team();
+                    team.setId(resultSet.getInt("id"));
+                    team.setName(resultSet.getString("name"));
+                }
+            }
+        } catch (SQLException e) {
+            LOG.severe(e.getMessage());
+        }
+        return team;
     }
 
     public void setTeamsForUser(User user, Team team) {
@@ -165,11 +198,9 @@ public class DBManager {
     public static void main(String[] args) {
         dbManager = getInstance();
 
-        dbManager.insertUser(User.createUser("insertU1"));
-        dbManager.insertUser(User.createUser("insertU2"));
-        dbManager.insertUser(User.createUser("insertU3"));
-        dbManager.insertUser(User.createUser("insertU4"));
-        System.out.println(dbManager.findAllUsers());
+        Team team = dbManager.getTeam("teamA");
+        System.out.println(team);
+        System.out.println(team.getId());
 
     }
 

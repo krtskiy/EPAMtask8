@@ -13,9 +13,7 @@ public class Demo {
     private static final String SEPARATOR = "===========================";
 
     private static void printList(List<?> list) {
-
         System.out.println(list);
-
     }
 
     public static void main(String[] args) {
