@@ -47,6 +47,7 @@ public class DBManager {
         }
     }
 
+
     public static DBManager getInstance() {
         if (dbManager == null) {
             dbManager = new DBManager();
@@ -59,8 +60,8 @@ public class DBManager {
     }
 
     public void insertUser(User user) {
-        try (PreparedStatement preparedStatement =
-                     getConnection(url).prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)
+        try (Connection connection = getConnection(url);
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.execute();
@@ -77,7 +78,8 @@ public class DBManager {
 
     public List<User> findAllUsers() {
         List<User> listOfUsers = new ArrayList<>();
-        try (Statement statement = getConnection(url).createStatement();
+        try (Connection connection = getConnection(url);
+             Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(FIND_ALL_USERS)
         ) {
             while (resultSet.next()) {
@@ -93,8 +95,8 @@ public class DBManager {
     }
 
     public void insertTeam(Team team) {
-        try (PreparedStatement preparedStatement =
-                     getConnection(url).prepareStatement(INSERT_TEAM, Statement.RETURN_GENERATED_KEYS)
+        try (Connection connection = getConnection(url);
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_TEAM, Statement.RETURN_GENERATED_KEYS)
         ) {
             preparedStatement.setString(1, team.getName());
             preparedStatement.execute();
@@ -111,7 +113,8 @@ public class DBManager {
 
     public List<Team> findAllTeams() {
         List<Team> listOfTeams = new ArrayList<>();
-        try (Statement statement = getConnection(url).createStatement();
+        try (Connection connection = getConnection(url);
+             Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(FIND_ALL_TEAMS)
         ) {
             while (resultSet.next()) {
@@ -128,7 +131,8 @@ public class DBManager {
 
     public User getUser(String login) {
         User user = null;
-        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(FIND_USER)) {
+        try (Connection connection = getConnection(url);
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER)) {
 
             preparedStatement.setString(1, login);
 
@@ -148,7 +152,8 @@ public class DBManager {
 
     public Team getTeam(String name) {
         Team team = null;
-        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(FIND_TEAM)) {
+        try (Connection connection = getConnection(url);
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_TEAM)) {
             preparedStatement.setString(1, name);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -165,15 +170,22 @@ public class DBManager {
 
     // I'm very sorry for this try-catch spaghetti
     public void setTeamsForUser(User user, Team... team) {
-        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(SET_TEAMS_FOR_USER)) {
-            getConnection(url).setAutoCommit(false);
-            for (Team t : team) {
-                preparedStatement.setInt(1, user.getId());
-                preparedStatement.setInt(2, t.getId());
-                preparedStatement.addBatch();
+        try (Connection connection = getConnection(url)) {
+            connection.setAutoCommit(false);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(SET_TEAMS_FOR_USER)) {
+                for (Team t : team) {
+                    preparedStatement.setInt(1, user.getId());
+                    preparedStatement.setInt(2, t.getId());
+                    preparedStatement.addBatch();
+                    preparedStatement.executeBatch();
+                }
+            } catch (SQLException e) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+                LOG.severe(e.getMessage());
             }
-            preparedStatement.executeBatch();
-            getConnection(url).commit();
+            connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
             try {
                 getConnection(url).rollback();
@@ -181,19 +193,14 @@ public class DBManager {
                 LOG.severe(e.getMessage());
             }
             LOG.severe(e.getMessage());
-        } finally {
-            try {
-                getConnection(url).setAutoCommit(true);
-            } catch (SQLException e) {
-                LOG.severe(e.getMessage());
-            }
         }
     }
 
     public List<Team> getUserTeams(User user) {
         List<Team> listOfUserTeams = new ArrayList<>();
         Team team;
-        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(GET_USER_TEAMS)) {
+        try (Connection connection = getConnection(url);
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_TEAMS)) {
             preparedStatement.setInt(1, user.getId());
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -211,7 +218,8 @@ public class DBManager {
     }
 
     public void deleteTeam(Team team) {
-        try (PreparedStatement preparedStatement = getConnection(url).prepareStatement(DELETE_TEAM)) {
+        try (Connection connection = getConnection(url);
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_TEAM)) {
             preparedStatement.setInt(1, team.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -220,7 +228,8 @@ public class DBManager {
     }
 
     public void updateTeam(Team team) {
-        try(PreparedStatement preparedStatement = getConnection(url).prepareStatement(UPDATE_TEAM)) {
+        try (Connection connection = getConnection(url);
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_TEAM)) {
             preparedStatement.setString(1, team.getName());
             preparedStatement.setInt(2, team.getId());
             preparedStatement.execute();
