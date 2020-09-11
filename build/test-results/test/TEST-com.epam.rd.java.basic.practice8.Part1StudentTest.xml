@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.epam.rd.java.basic.practice8.Part1StudentTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-09-11T01:09:24" hostname="DESKTOP-1A0RBB1" time="0.053">
+<testsuite name="com.epam.rd.java.basic.practice8.Part1StudentTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-09-11T01:18:16" hostname="DESKTOP-1A0RBB1" time="0.338">
   <properties/>
-  <testcase name="dbManagerTestPlaceholder" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="0.053"/>
-  <system-out><![CDATA[]]></system-out>
+  <testcase name="testsPlaceholder" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="0.338"/>
+  <system-out><![CDATA[[ivanov, petrov, obama]
+===========================
+[teamA, teamB, teamC]
+===========================
+null
+~~~~~
+null
+~~~~~
+null
+~~~~~
+===========================
+[teamA, teamB, teamC]
+teamA
+1
+]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
