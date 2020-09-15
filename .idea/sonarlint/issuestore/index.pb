@@ -26,3 +26,7 @@ t
 Dsrc/test/java/com/epam/rd/java/basic/practice8/Part4StudentTest.java,4\4\444b19fc8410ccc12c735d9469d260940dbf79f4
 t
 Dsrc/test/java/com/epam/rd/java/basic/practice8/Part3StudentTest.java,8\7\870edfc254e44dbfa34b55ffb1658063aaf1a276
+v
+Fsrc/test/java/com/epam/rd/java/basic/practice8/db/entity/UserTest.java,d\4\d44d4f033132161326cb34ffb7cf309311312767
+v
+Fsrc/test/java/com/epam/rd/java/basic/practice8/db/entity/TeamTest.java,1\1\11492cc2aaf0aaf5bb8d3b2d316f59a7e8db4b16

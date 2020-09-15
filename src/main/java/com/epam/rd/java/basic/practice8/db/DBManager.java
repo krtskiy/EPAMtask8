@@ -176,11 +176,7 @@ public class DBManager {
             connection.setAutoCommit(true);
         } catch (SQLException e) {
             try {
-                getConnection(url).rollback();
-            } catch (SQLException ex) {
-                LOG.severe(e.getMessage());
-            }
-            LOG.severe(e.getMessage());
+                getConnection(url).rollback(); } catch (SQLException ex) { LOG.severe(e.getMessage()); }LOG.severe(e.getMessage());
         }
     }
 
@@ -194,13 +190,7 @@ public class DBManager {
             }
         } catch (SQLException e) {
             try {
-                connection.rollback();
-                connection.setAutoCommit(true);
-            } catch (SQLException ex) {
-                LOG.severe(e.getMessage());
-            }
-            LOG.severe(e.getMessage());
-        }
+                connection.rollback();connection.setAutoCommit(true); } catch (SQLException ex) {LOG.severe(e.getMessage()); }LOG.severe(e.getMessage()); }
     }
 
     public List<Team> getUserTeams(User user) {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.epam.rd.java.basic.practice8.Part1StudentTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-09-15T01:19:18" hostname="DESKTOP-1A0RBB1" time="1.758">
+<testsuite name="com.epam.rd.java.basic.practice8.Part1StudentTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-09-15T03:02:16" hostname="DESKTOP-1A0RBB1" time="1.743">
   <properties/>
-  <testcase name="shouldInsertNewUser" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="1.444"/>
-  <testcase name="testPlaceholder" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="0.305"/>
+  <testcase name="shouldInsertNewUser" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="1.393"/>
+  <testcase name="testPlaceholder" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="0.341"/>
   <testcase name="shouldReturnListOfUsers" classname="com.epam.rd.java.basic.practice8.Part1StudentTest" time="0.009"/>
   <system-out><![CDATA[=========================== Part 1
 [ivanov, testUser, petrov, obama]
