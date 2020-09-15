@@ -20,3 +20,9 @@ p
 :
 
 gradlew.sh,f\d\fd6370dd5b775d5dc5a5c365c89969776fcbe8f4
+t
+Dsrc/test/java/com/epam/rd/java/basic/practice8/Part5StudentTest.java,6\9\69a8037b12da04273cef37c2d5024fc4ef28f71d
+t
+Dsrc/test/java/com/epam/rd/java/basic/practice8/Part4StudentTest.java,4\4\444b19fc8410ccc12c735d9469d260940dbf79f4
+t
+Dsrc/test/java/com/epam/rd/java/basic/practice8/Part3StudentTest.java,8\7\870edfc254e44dbfa34b55ffb1658063aaf1a276
